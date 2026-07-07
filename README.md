@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Bleach - Tap to Earn</title>
+    <!-- HII NDIO LINK SAHIHI SASA HIVI: Ina WebApp yenye herufi kubwa -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         * {
@@ -289,49 +290,45 @@
         const taskBtn = document.getElementById('task-btn-action');
         const multitapLevelDisplay = document.getElementById('multitap-level');
 
-        // Kupakia pointi zilizohifadhiwa (Kama ni mpya anaanza na 0)
+        // Kupakia Progress
         let currentScore = parseInt(localStorage.getItem('homebleach_score')) || 0;
         let currentEnergy = parseInt(localStorage.getItem('homebleach_energy')) || 1000;
-        let tapValue = parseInt(localStorage.getItem('homebleach_tapvalue')) || 1; // Huanza na +1
+        let tapValue = parseInt(localStorage.getItem('homebleach_tapvalue')) || 1;
 
-        // Onyesha pointi za mwanzo kwenye kioo
         scoreDisplay.textContent = currentScore.toLocaleString();
         energyDisplay.textContent = currentEnergy;
         multitapLevelDisplay.textContent = `Tap: +${tapValue}`;
+        
         if(tapValue > 1) {
             boostBtn.style.background = "#4e5d6c";
             boostBtn.style.color = "#fff";
             boostBtn.innerHTML = "🚀 Max Boosted";
         }
 
-        // 1. Mfumo wa Kubofya Coin
+        // Kubofya Coin
         coin.addEventListener('click', () => {
             if (currentEnergy >= tapValue) {
                 currentScore += tapValue;
                 currentEnergy -= tapValue;
                 
-                // Sasisha Kioo
                 scoreDisplay.textContent = currentScore.toLocaleString();
                 energyDisplay.textContent = currentEnergy;
 
-                // Hifadhi kwenye kumbukumbu ya simu
                 localStorage.setItem('homebleach_score', currentScore);
                 localStorage.setItem('homebleach_energy', currentEnergy);
             }
         });
 
-        // 2. Mfumo wa Boost (Kuhama kutoka Tap 1 kwenda Tap 2)
+        // Boost
         boostBtn.addEventListener('click', () => {
             if (tapValue === 1) {
-                if (currentScore >= 100) { // Inahitaji pointi 100 kununua Boost ya Tap +2
+                if (currentScore >= 100) {
                     currentScore -= 100;
                     tapValue = 2;
                     
-                    // Hifadhi Mabadiliko
                     localStorage.setItem('homebleach_score', currentScore);
                     localStorage.setItem('homebleach_tapvalue', tapValue);
 
-                    // Sasisha Kioo
                     scoreDisplay.textContent = currentScore.toLocaleString();
                     multitapLevelDisplay.textContent = `Tap: +${tapValue}`;
                     boostBtn.style.background = "#4e5d6c";
@@ -344,15 +341,15 @@
             }
         });
 
-        // 3. Mfumo wa Task
+        // Task
         taskBtn.addEventListener('click', () => {
             window.open('https://t.me/EsboniBot', '_blank');
-            currentScore += 2000; // Zawadi ya Task
+            currentScore += 2000;
             localStorage.setItem('homebleach_score', currentScore);
             scoreDisplay.textContent = currentScore.toLocaleString();
         });
 
-        // 4. Nishati Kuongezeka yenyewe (Energy Regen)
+        // Energy Regen
         setInterval(() => {
             if (currentEnergy < 1000) {
                 currentEnergy += 1;
